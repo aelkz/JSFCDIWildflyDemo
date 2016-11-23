@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
         version="3.0">
 
-<display-name>JSF CDI Wildfly Demo</display-name>
+  <display-name>JSF CDI Wildfly Demo</display-name>
 
   <context-param>
     <param-name>javax.faces.DEFAULT_SUFFIX</param-name>

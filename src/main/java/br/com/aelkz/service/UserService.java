@@ -5,24 +5,25 @@ import br.com.aelkz.model.User;
 import br.com.aelkz.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
-import java.io.IOException;
+import java.io.Serializable;
 import java.util.Set;
 import java.util.logging.Logger;
 
 @ManagedBean
-@SessionScoped
-public class UserService implements GenericService<User> {
+@RequestScoped
+public class UserService implements GenericService<User>, Serializable {
 
     private final Logger LOGGER = Logger.getLogger(UserService.class.getName());
 
     private User item;
-    private User beforeUpdate;
     private Boolean preUpdateOperation;
+
+    public UserService() {}
 
     @Inject
     private UserRepository repository;
@@ -55,11 +56,8 @@ public class UserService implements GenericService<User> {
     public void preUpdate(User entity) throws EntityException {
         LOGGER.info("preUpdate check in: "+entity.getId());
 
-        beforeUpdate = entity.clone();
         this.item = entity;
         setPreUpdateOperation(true);
-
-        tryReload();
     }
 
     @Override
@@ -73,8 +71,6 @@ public class UserService implements GenericService<User> {
         repository.update(updated);
         this.item = new User();
         setPreUpdateOperation(false);
-
-        tryReload();
     }
 
     @Override
@@ -96,16 +92,6 @@ public class UserService implements GenericService<User> {
     @Override
     public Boolean validate(User entity) throws EntityException {
         return entity != null;
-    }
-
-    public void tryReload() {
-        try {
-            reload();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (EntityException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override

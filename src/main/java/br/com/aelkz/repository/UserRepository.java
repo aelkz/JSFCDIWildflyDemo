@@ -21,9 +21,6 @@ public class UserRepository implements GenericRepository<User> {
     private AtomicInteger index = new AtomicInteger();
 
     public Set<User> getStorage() {
-        if (storage == null) {
-            storage = new HashSet<>();
-        }
         return storage;
     }
 
@@ -32,9 +29,6 @@ public class UserRepository implements GenericRepository<User> {
     }
 
     public Integer getNextVal() {
-        if (index == null) {
-            index = new AtomicInteger();
-        }
         return index.incrementAndGet();
     }
 
@@ -93,6 +87,7 @@ public class UserRepository implements GenericRepository<User> {
         synchronized(getStorage()) {
             Set<User> found = new HashSet<>();
             for(User u : getStorage()){
+                LOGGER.info("[ID]="+u.getId()+" [NAME]="+u.getFirstName());
                 if(u.hashCode() == user.hashCode()){
                     LOGGER.info("[HASHCODE]="+user.hashCode()+" equals to [HASHCODE]="+u.hashCode());
                     found.add(u);
