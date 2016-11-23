@@ -87,7 +87,6 @@ public class UserRepository implements GenericRepository<User> {
         synchronized(getStorage()) {
             Set<User> found = new HashSet<>();
             for(User u : getStorage()){
-                LOGGER.info("[ID]="+u.getId()+" [NAME]="+u.getFirstName());
                 if(u.hashCode() == user.hashCode()){
                     LOGGER.info("[HASHCODE]="+user.hashCode()+" equals to [HASHCODE]="+u.hashCode());
                     found.add(u);
