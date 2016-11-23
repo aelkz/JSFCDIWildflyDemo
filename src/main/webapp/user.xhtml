@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>PrimeFaces Test</title>
+</h:head>
+
+<h:body>
+    <ui:include src="/menu.xhtml" >
+        <ui:param name="idx" value="1" />
+    </ui:include>
+    <p:growl id="messages" showDetail="true" />
+
+    <h:form id="saveForm" enctype="multipart/form-data" rendered="#{!userService.preUpdateOperation}">
+        <p:panel header="User registration form">
+            <h:panelGrid columns="2" cellpadding="4">
+
+                <h:outputText value="First Name: " />
+                <p:inputText required="true" value="#{userService.item.firstName}" />
+
+                <h:outputText value="Last Name: " />
+                <p:inputText required="true" value="#{userService.item.lastName}" />
+
+                <h:outputText value="E-mail: " />
+                <p:inputText required="true" requiredMessage="please enter your e-mail address." validatorMessage="please enter a valid e-mail address." value="#{userService.item.email}">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </p:inputText>
+
+                <h:outputText value="Mobile phone: " />
+                <p:inputMask value="#{userService.item.cellphone}" mask="(99) 99999-9999"/>
+
+                <p:outputLabel for="gender" value="Gender:" />
+                <p:selectOneRadio id="gender" value="#{userService.item.gender}">
+                    <f:selectItem itemLabel="Male" itemValue="0" />
+                    <f:selectItem itemLabel="Female" itemValue="1" />
+                </p:selectOneRadio>
+
+                <h:outputText value="Linkedin profile: " />
+                <p:inputText required="true" value="#{userService.item.linkedin}" />
+
+                <h:outputText value="Attach your resumé: " />
+                <p:fileUpload value="#{userService.item.resume}" mode="simple" skinSimple="true"/>
+
+                <p:commandButton value="Add User" ajax="false" actionListener="#{userService.save}" disabled="false" />
+
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+
+    <h:form id="updateForm" rendered="#{userService.preUpdateOperation}">
+        <h:inputHidden value="#{userService.item.id}" />
+
+        <p:panel header="Update user details form">
+            <h:panelGrid columns="2" cellpadding="4">
+
+                <h:outputText value="First Name: " />
+                <p:inputText required="true" value="#{userService.item.firstName}" />
+
+                <h:outputText value="Last Name: " />
+                <p:inputText required="true" value="#{userService.item.lastName}" />
+
+                <h:outputText value="E-mail: " />
+                <p:inputText required="true" requiredMessage="please enter your e-mail address." validatorMessage="please enter a valid e-mail address." value="#{userService.item.email}">
+                    <f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                </p:inputText>
+
+                <h:outputText value="Mobile phone: " />
+                <p:inputMask value="#{userService.item.cellphone}" mask="(99) 99999-9999"/>
+
+                <p:commandButton value="Save" ajax="false" actionListener="#{userService.update}" disabled="false" />
+                <p:commandButton value="Cancel" ajax="false" actionListener="#{userService.cancel}" disabled="false" />
+
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+
+    <h:form id="allForm" rendered="#{not empty userService.all and !userService.preUpdateOperation}">
+        <p:panel header="List of registered users">
+            <h:panelGrid columns="2" cellpadding="4">
+
+                    <h:dataTable value="#{userService.all}" var="user">
+                        <h:column><f:facet name="header">ID</f:facet>#{user.id}</h:column>
+                        <h:column><f:facet name="header">First Name</f:facet>#{user.firstName}</h:column>
+                        <h:column><f:facet name="header">Last Name</f:facet>#{user.lastName}</h:column>
+                        <h:column><f:facet name="header">E-mail</f:facet>#{user.email}</h:column>
+                        <h:column><f:facet name="header">Mobile phone</f:facet>#{user.cellphone}</h:column>
+                        <h:column>
+                            <h:commandButton value="update" action="#{userService.preUpdate(user)}" />
+                        </h:column>
+                        <h:column>
+                            <h:commandButton value="delete" action="#{userService.remove(user)}" />
+                        </h:column>
+                    </h:dataTable>
+            </h:panelGrid>
+        </p:panel>
+    </h:form>
+
+</h:body>
+
+</html>
