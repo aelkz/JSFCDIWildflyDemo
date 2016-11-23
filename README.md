@@ -8,3 +8,6 @@ http://www.codeproject.com/Articles/1030872/A-Simple-CRUD-Example-with-JSF
 
 After configuration of your IDE (IntelliJ IDEA in my case), you should be able to access using the common url:
 http://localhost:8080/demo
+
+by starting the app server inside the IDE or using the maven command:
+mvn wildfly:run (into the project folder containing the pom.xml file)
