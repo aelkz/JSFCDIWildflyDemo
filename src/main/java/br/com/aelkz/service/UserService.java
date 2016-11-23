@@ -54,8 +54,6 @@ public class UserService implements GenericService<User>, Serializable {
 
     @Override
     public void preUpdate(User entity) throws EntityException {
-        LOGGER.info("preUpdate check in: "+entity.getId());
-
         this.item = entity;
         setPreUpdateOperation(true);
     }
